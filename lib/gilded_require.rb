@@ -8,4 +8,5 @@ require_relative 'types/regular_item'
 require_relative 'types/sulfuras'
 require_relative 'item'
 require_relative 'gilded_rose'
+
 require 'byebug'

@@ -8,24 +8,11 @@ RSpec.describe Types::BackstagePass do
 
   let(:backstage_pass) { described_class.new(item) }
 
-  describe '.call' do
-    it 'creates an instance and calls update_quality' do
-      expect(described_class).to receive(:new).with(item).and_call_original
-      expect_any_instance_of(described_class).to receive(:update_quality)
-
-      described_class.call(item)
-    end
-  end
+  it_behaves_like 'call is callable'
 
   describe '#update_quality' do
-    it 'calls check_max_quality and decrease_sell_in' do
-      allow(backstage_pass).to receive(:check_max_quality).with(item)
-      allow(backstage_pass).to receive(:decrease_sell_in).with(item)
-
-      backstage_pass.update_quality
-
-      expect(backstage_pass).to have_received(:check_max_quality).with(item).once
-      expect(backstage_pass).to have_received(:decrease_sell_in).with(item).once
+    it_behaves_like 'update_quality callable' do
+      let(:class_name) { backstage_pass }
     end
 
     it 'does not change the item name' do

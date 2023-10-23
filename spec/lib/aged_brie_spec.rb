@@ -4,24 +4,11 @@ RSpec.describe Types::AgedBrie do
   let(:item) { |ex| Item.new('Aged Brie', ex.metadata[:sellin] || 5, ex.metadata[:quality] || 10) }
   let(:aged_brie) { described_class.new(item) }
 
-  describe '.call' do
-    it 'creates an instance and calls update_quality' do
-      expect(described_class).to receive(:new).with(item).and_call_original
-      expect_any_instance_of(described_class).to receive(:update_quality)
-
-      described_class.call(item)
-    end
-  end
+  it_behaves_like 'call is callable'
 
   describe '#update_quality' do
-    it 'calls check_max_quality and decrease_sell_in' do
-      allow(aged_brie).to receive(:check_max_quality).with(item)
-      allow(aged_brie).to receive(:decrease_sell_in).with(item)
-
-      aged_brie.update_quality
-
-      expect(aged_brie).to have_received(:check_max_quality).with(item).once
-      expect(aged_brie).to have_received(:decrease_sell_in).with(item).once
+    it_behaves_like 'update_quality callable' do
+      let(:class_name) { aged_brie }
     end
 
     it 'does not change the item name' do

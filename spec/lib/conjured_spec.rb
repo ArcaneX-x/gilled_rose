@@ -4,24 +4,11 @@ RSpec.describe Types::Conjured do
   let(:item) { |ex| Item.new('Conjured Mana Cake', ex.metadata[:sellin] || 3, ex.metadata[:quality] || 6) }
   let(:conjured_cake) { described_class.new(item) }
 
-  describe '.call' do
-    it 'creates an instance and calls update_quality' do
-      expect(described_class).to receive(:new).with(item).and_call_original
-      expect_any_instance_of(described_class).to receive(:update_quality)
-
-      described_class.call(item)
-    end
-  end
+  it_behaves_like 'call is callable'
 
   describe '#update_quality' do
-    it 'calls check_max_quality and decrease_sell_in' do
-      allow(conjured_cake).to receive(:check_max_quality).with(item)
-      allow(conjured_cake).to receive(:decrease_sell_in).with(item)
-
-      conjured_cake.update_quality
-
-      expect(conjured_cake).to have_received(:check_max_quality).with(item).once
-      expect(conjured_cake).to have_received(:decrease_sell_in).with(item).once
+    it_behaves_like 'update_quality callable' do
+      let(:class_name) { conjured_cake }
     end
 
     it 'does not change the item name' do
